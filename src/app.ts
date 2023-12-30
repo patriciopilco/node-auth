@@ -1,4 +1,5 @@
 import { envs } from "./config";
+import { AppRoutes } from "./presentation/routes";
 import { Server } from "./presentation/server";
 
 (()=>{
@@ -11,6 +12,7 @@ async function main() {
     // todo: iniciar server
     console.log('Iniciando server!!!')
     new Server({
-        port: envs.PORT
+        port: envs.PORT,
+        routes: AppRoutes.routes
     }).start();
 }
