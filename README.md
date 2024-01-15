@@ -32,3 +32,13 @@ Variables de entorno
 ```bash
 npm i dotenv env-var
 ```
+
+Expression Regular para valira Email
+
+```bash
+export class Validators {
+  static get email() {
+    return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  } 
+}
+```
