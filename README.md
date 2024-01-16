@@ -42,3 +42,9 @@ export class Validators {
   } 
 }
 ```
+
+Generar codigos random
+
+```bash
+openssl rand -hex 12
+```
