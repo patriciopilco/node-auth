@@ -1,9 +1,7 @@
-import { JwtAdapter } from "../../../config";
 import { RegisterUserDto } from "../../dtos/auth/register-user.dto";
 import { AuthRepository } from "../../repositories/auth.repository";
 
-interface UserToken {
-    token:string;
+interface UserRegister {
     user:{
         id:string;
         name:string;
@@ -12,25 +10,18 @@ interface UserToken {
 }
 
 interface RegisterUserUseCase {
-    execute(registerUserDto: RegisterUserDto): Promise<UserToken>
+    execute(registerUserDto: RegisterUserDto): Promise<UserRegister>
 }
 
-type SignToken = (payload:Object, durarion?:string)=>Promise<string|null>;
+
 export class RegisterUser implements RegisterUserUseCase {
 
     constructor(
         private readonly authRepository: AuthRepository,
-        private readonly signToken: SignToken = JwtAdapter.generateToken,
-    ){}
-    async execute(registerUserDto: RegisterUserDto): Promise<UserToken>{
-
-        const user = await this.authRepository.register(registerUserDto);
-        const token = await this.signToken({id: user.id},'2h');
-
-        if(!token) throw new Error('Error signing token');
-
-        return {
-            token: token,
+     ){}
+    async execute(registerUserDto: RegisterUserDto): Promise<UserRegister>{
+    const user = await this.authRepository.register(registerUserDto);
+           return {
             user: {
                 id: user.id,
                 name: user.name,

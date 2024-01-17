@@ -10,13 +10,9 @@ export class AuthRoutes {
         const authRepository = new AuthRepositoryImpl(datasource);
         const controller = new AuthController(authRepository);
 
-        //Definir todas la rutas principales
-
-        router.get('/',AuthMiddleware.validateJWT, controller.getUsers);
-        router.post('/login', controller.loginUser);
-        router.post('/register', controller.registerUser);
-       
-
+        router.post('/login',controller.loginUser);
+        router.post('/register',AuthMiddleware.validateJWT, controller.registerUser);
+   
         return router;
     }
 }

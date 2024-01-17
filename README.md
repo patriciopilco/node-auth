@@ -1,12 +1,12 @@
-# node-auth
+# API Autorizacion y Registro con NODE
 
 
-Crer package.json
+### Crer package.json
 ``` bash
 npm init -y
 ```
 
-Configuracion node y typescript
+### Configuracion node y typescript
 
 https://gist.github.com/Klerith/3ba17e86dc4fabd8301a59699b9ffc0b
 
@@ -25,7 +25,7 @@ package.json
   },
 ```
 
-Variables de entorno
+### Variables de entorno
 
 - Realizar la instalacion para versiones de node menor a 20.x.x
 
@@ -33,7 +33,7 @@ Variables de entorno
 npm i dotenv env-var
 ```
 
-Expression Regular para valira Email
+### Expression Regular para valira Email
 
 ```bash
 export class Validators {
@@ -43,8 +43,33 @@ export class Validators {
 }
 ```
 
-Generar codigos random
+### Generar codigos random
 
 ```bash
 openssl rand -hex 12
+```
+
+### Variables de entorno para pruebas 
+```bash
+PORT=3000
+MONGO_URL=mongodb://mongo-user:123456@localhost:27017
+MONGO_DB_NAME=security
+JWT_SECRET=3bec6270906972aa535e0ca0
+```
+
+## Ejecuta el entorno desarrollo
+
+1. Crear el archivo .env
+2. Crear variables de entorno
+3. Intalar dependencia
+```bash
+npm install
+```
+4. Levantar mongodb en docker
+```bash
+docker compose up -s
+```
+5. Ejecutar en modo desarrollo
+```bash
+npm run dev
 ```
