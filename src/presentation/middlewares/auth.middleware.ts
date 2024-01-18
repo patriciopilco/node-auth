@@ -11,13 +11,13 @@ export class AuthMiddleware {
         if(!authorization){
             return res.status(401).json({
                 ok:false,
-                msg:'No se ha encontrado el token'
+                msg:'Token not found'
             })
         }
         if(authorization.startsWith('Bearer ')){
             return res.status(401).json({
                 ok:false,
-                msg:'No se ha encontrado el token'
+                msg:'Token not found'
             })
         }
 
@@ -28,7 +28,7 @@ export class AuthMiddleware {
             if(!payload){
                 return res.status(401).json({
                     ok:false,
-                    msg:'Token no válido'
+                    msg:'Invalid Token'
                 })
             }
 
