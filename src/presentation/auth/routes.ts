@@ -10,9 +10,10 @@ export class AuthRoutes {
         const authRepository = new AuthRepositoryImpl(datasource);
         const controller = new AuthController(authRepository);
 
-        router.post('/login',controller.loginUser);
-        router.post('/register',AuthMiddleware.validateJWT, controller.registerUser);
-   
+        router.post('/login', controller.loginUser);
+        router.post('/register', controller.registerUser);
+        //todo: add middleware to validate jwt
+        //router.get('/',AuthMiddleware.validateJWT,);
         return router;
     }
 }
