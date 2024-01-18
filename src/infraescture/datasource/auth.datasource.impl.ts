@@ -15,7 +15,6 @@ export class AuthDatasourceImpl implements AuthDatasource {
     ){}
     async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
         const {email, password} = loginUserDto;
-        console.log(email);
         try{
             const user = await UserModel.findOne({email});
             if(!user) throw CustomerError.badRequest('User not found');
