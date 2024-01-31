@@ -1,10 +1,13 @@
-import { LoginUserDto } from "../dtos/auth/login-user.dto";
-import { RegisterUserDto } from "../dtos/auth/register-user.dto";
-import { UserEntity } from "../entites/user.entity";
+import { ExistsUserDto } from "@domain/dtos/auth/exists-user.dto";
+import { LoginUserDto } from "@domain/dtos/auth/login-user.dto";
+import { RegisterUserDto } from "@domain/dtos/auth/register-user.dto";
+import { UserEntity } from "@domain/entites/user.entity";
+
 
 export abstract class AuthRepository {
 
     abstract register(registerUserDto: RegisterUserDto):Promise<UserEntity>
     abstract login(loginUserDto: LoginUserDto):Promise<UserEntity>
+    abstract exists(existsUserDto: ExistsUserDto):Promise<boolean>
 
 }

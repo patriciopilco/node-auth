@@ -67,9 +67,15 @@ npm install
 ```
 4. Levantar mongodb en docker
 ```bash
-docker compose up -s
+docker compose up -d
 ```
 5. Ejecutar en modo desarrollo
 ```bash
 npm run dev
 ```
+
+## Endpoint
+
+/api/auth/login
+/api/auth/register
+/api/auth/exists

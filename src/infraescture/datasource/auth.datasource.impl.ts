@@ -1,6 +1,7 @@
 import { BcryptAdapter } from "../../config";
 import { UserModel } from "../../data/mongodb";
 import { AuthDatasource, CustomerError, RegisterUserDto, UserEntity } from "../../domain";
+import { ExistsUserDto } from "../../domain/dtos/auth/exists-user.dto";
 import { LoginUserDto } from "../../domain/dtos/auth/login-user.dto";
 import { UserMapper } from "../mappers/user.mapper";
 
@@ -13,6 +14,19 @@ export class AuthDatasourceImpl implements AuthDatasource {
         private readonly hashPassword: HashFunction = BcryptAdapter.hash,
         private readonly comparePassword: CompareFunction = BcryptAdapter.compare,
     ){}
+    async exists(existsUserDto: ExistsUserDto): Promise<boolean> {
+        const {email} = existsUserDto;
+        try{
+            const user = await UserModel.findOne({email});
+            if(!user) return false;
+            return true;
+        }catch (error){
+            if(error instanceof CustomerError) {
+                throw error
+            }
+            throw CustomerError.internalServer();
+        }
+    }
     async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
         const {email, password} = loginUserDto;
         try{

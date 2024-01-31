@@ -13,7 +13,6 @@ interface RegisterUserUseCase {
     execute(registerUserDto: RegisterUserDto): Promise<UserRegister>
 }
 
-
 export class RegisterUser implements RegisterUserUseCase {
 
     constructor(
