@@ -12,6 +12,7 @@ export class AuthRoutes {
 
         router.post('/login', controller.loginUser);
         router.post('/register', controller.registerUser);
+        router.post('/exists', controller.existsUser);
         //todo: add middleware to validate jwt
         //router.get('/',AuthMiddleware.validateJWT,);
         return router;
