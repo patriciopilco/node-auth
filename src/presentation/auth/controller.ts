@@ -5,6 +5,8 @@ import { RegisterUser, ExistsUser } from '../../domain/use-cases';
 import { LoginUserDto } from '../../domain/dtos/auth/login-user.dto';
 import { LoginUser } from '../../domain/use-cases/auth/login-user.use-case';
 import { ExistsUserDto } from '../../domain/dtos/auth/exists-user.dto';
+import { IdentifyUserDto } from '../../domain/dtos/auth/identify-user.dto';
+import { ProfileUser } from '../../domain/use-cases/auth/profile-user.use-case';
 
 
 
@@ -40,22 +42,21 @@ export class AuthController {
 
     existsUser = (req: Request, res: Response) => {
         const [error, existsUserDto] = ExistsUserDto.create(req.body);
-        console.log(existsUserDto)
         if( error ) return res.status(400).json( {error} );
         new ExistsUser(this.authRepository)
         .execute(existsUserDto!)
         .then(data => res.json(data))
         .catch(error => this.handleError(error, res));
-       
+      
     }
 
-    getUsers = (req: Request, res: Response ) => {
-        UserModel.find()
-          .then( users => {
-            res.json({
-               users,
-            }) 
-          })
-          .catch(()=> res.status(500).json({ error: 'Internal server error' }))
+    profileUser = (req: Request, res: Response) => {
+        const [error, identifyUserDto] = IdentifyUserDto.create(req.body);
+        if( error ) return res.status(400).json( {error} );
+        new ProfileUser(this.authRepository)
+        .execute(identifyUserDto!)
+        .then(data => res.json(data))
+        .catch(error => this.handleError(error, res));
     }
+
 }

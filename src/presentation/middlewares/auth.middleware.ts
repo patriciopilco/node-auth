@@ -4,25 +4,21 @@ import { UserModel } from '../../data/mongodb';
 
 
 export class AuthMiddleware {
-
     static validateJWT = async (req: Request, res:Response, next:NextFunction)=>{
-
         const authorization = req.header('Authorization');
         if(!authorization){
             return res.status(401).json({
                 ok:false,
-                msg:'Token not found'
+                msg:'Token not found '
             })
         }
-        if(authorization.startsWith('Bearer ')){
+        if(!authorization.startsWith('Bearer')){
             return res.status(401).json({
                 ok:false,
-                msg:'Token not found'
+                msg:'Token not found '
             })
         }
-
         const token = authorization.split(' ').at(1) || '';
-
         try{
             const payload = await JwtAdapter.validateToken<{id:string}>(token);
             if(!payload){
@@ -33,7 +29,6 @@ export class AuthMiddleware {
             }
 
             const user = await UserModel.findById(payload.id);
-
             if(!user){
                 return res.status(401).json({
                     ok:false,
@@ -41,7 +36,6 @@ export class AuthMiddleware {
                 })
             }
             req.body.user = user;
-
             next();
         }catch(err){
             console.log(err);
