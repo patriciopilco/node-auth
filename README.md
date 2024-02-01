@@ -79,3 +79,4 @@ npm run dev
 /api/auth/login
 /api/auth/register
 /api/auth/exists
+/api/auth/profile
