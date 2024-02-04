@@ -55,6 +55,7 @@ PORT=3000
 MONGO_URL=mongodb://mongo-user:123456@localhost:27017
 MONGO_DB_NAME=security
 JWT_SECRET=3bec6270906972aa535e0ca0
+JWT_REFRESH_SECRET = 42b595e616851b23a0d4a540
 ```
 
 ## Ejecuta el entorno desarrollo
