@@ -1,14 +1,19 @@
 import { Request, Response } from 'express'
 import { AuthRepository, CustomerError, RegisterUserDto } from '../../domain';
-import { UserModel } from '../../data/mongodb';
 import { RegisterUser, ExistsUser } from '../../domain/use-cases';
 import { LoginUserDto } from '../../domain/dtos/auth/login-user.dto';
 import { LoginUser } from '../../domain/use-cases/auth/login-user.use-case';
 import { ExistsUserDto } from '../../domain/dtos/auth/exists-user.dto';
 import { IdentifyUserDto } from '../../domain/dtos/auth/identify-user.dto';
 import { ProfileUser } from '../../domain/use-cases/auth/profile-user.use-case';
+import { TokenDto } from '../../domain/dtos/auth/token.dto';
+import { RefreshUser } from '../../domain/use-cases/auth/refresh-user.use-case';
+import { JwtAdapter } from '../../config/jwt';
 
-
+interface Payload {
+    id: string;
+    // otras propiedades aquí si las hay
+  }
 
 export class AuthController {
     constructor(
@@ -57,6 +62,19 @@ export class AuthController {
         .execute(identifyUserDto!)
         .then(data => res.json(data))
         .catch(error => this.handleError(error, res));
+    }
+
+    refreshToken = (req: Request, res: Response) => {
+        const [error, tokenDto] = TokenDto.create(req.body);
+        if( error ) return res.status(400).json( {error} );
+       JwtAdapter.validateToken<Payload>(tokenDto!.token).then(payload => {
+              if(!payload) return res.status(401).json( {error: 'Invalid token'});
+              new RefreshUser()
+              .execute({id:payload.id})
+              .then(data => res.json(data))
+              .catch(error => this.handleError(error, res));
+       }).catch(error =>res.status(401).json( {error} ));
+      
     }
 
 }

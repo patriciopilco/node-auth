@@ -14,6 +14,7 @@ export class AuthRoutes {
         router.post('/register', controller.registerUser);
         router.post('/exists', controller.existsUser);
         router.post('/profile',AuthMiddleware.validateJWT,controller.profileUser);
+        router.post('/refresh',controller.refreshToken);
         return router;
     }
 }

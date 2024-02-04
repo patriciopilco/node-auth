@@ -3,11 +3,10 @@ import { envs } from './envs';
 
 const SEED = envs.JWT_SECRET;
 export class JwtAdapter {
-    static async generateToken( payload: Object, duration:string='2h'):Promise<string|null>{
+    static async generateToken( payload: Object, duration:string='1200s'):Promise<string|null>{
 
         return new Promise((resolve)=>{
-            jwt.sign(payload, SEED, { expiresIn: duration}, (err, token) => {
-
+                jwt.sign(payload, SEED, { expiresIn: duration}, (err, token) => {
                 if(err) return resolve(null);
                 resolve(token!);
             });
