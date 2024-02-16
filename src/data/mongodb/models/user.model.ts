@@ -13,7 +13,6 @@ const userSchema = new Schema({
     },
     password:{
         type: String,
-        required: [true, 'Password is required']
     },
     img:{
         type: String,
@@ -22,6 +21,9 @@ const userSchema = new Schema({
         type: [String],
         default: ['USER_ROLE'],
         enum: ['USER_ROLE','ADMIN_ROLE']
+    },
+    googleId:{
+        type:String,
     }
 
 })
