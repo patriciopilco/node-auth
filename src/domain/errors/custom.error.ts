@@ -3,7 +3,7 @@ import { measureMemory } from "vm";
 
 export class CustomerError extends Error {
     constructor(public readonly statusCode: number,
-        public readonly message:string)
+        public readonly message:string )
     {
         super(message);
     } 
@@ -23,4 +23,6 @@ export class CustomerError extends Error {
     static internalServer(message: string='Internal Server Error') {
         return new CustomerError(500, message);
     }
+
+ 
 }

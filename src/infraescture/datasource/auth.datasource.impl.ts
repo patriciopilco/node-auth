@@ -5,6 +5,8 @@ import { AuthDatasource, CustomerError, RegisterUserDto, UserEntity } from "../.
 import { ExistsUserDto } from "../../domain/dtos/auth/exists-user.dto";
 import { LoginUserDto } from "../../domain/dtos/auth/login-user.dto";
 import { UserMapper } from "../mappers/user.mapper";
+import { LoginGoogleUserDto } from "@domain/dtos/auth/login-google-user.dto";
+import { RegisterGoogleUserDto } from "@domain/dtos/auth/register-google-user.dto";
 
 type HashFunction = (password:string)=>string;
 type CompareFunction = (password:string, hashed:string)=>boolean;
@@ -46,7 +48,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
         try{
             const user = await UserModel.findOne({email});
             if(!user) throw CustomerError.badRequest('User not found');
-            const isMatching = this.comparePassword(password, user.password);
+            const isMatching = this.comparePassword(password, user.password!);
             if(!isMatching) throw CustomerError.badRequest('Invalid credentials');
             return UserMapper.userEntityFromObject(user?user:{});
         }catch (error){
@@ -57,6 +59,21 @@ export class AuthDatasourceImpl implements AuthDatasource {
         }
     }
 
+    async loginGoogle(loginGoogleUserDto: LoginGoogleUserDto): Promise<UserEntity> {
+        const { email, googleId } = loginGoogleUserDto;
+        try{
+            const user = await UserModel.findOne({googleId});
+            if(!user) throw CustomerError.badRequest('Google User not found');
+            return UserMapper.userEntityFromObject(user?user:{});
+        }catch (error){
+            if(error instanceof CustomerError) {
+                throw error
+            }
+            throw CustomerError.internalServer();
+        }
+    }
+  
+
     async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
         const { name, email, password } = registerUserDto;
         try{
@@ -66,6 +83,26 @@ export class AuthDatasourceImpl implements AuthDatasource {
                 name:name,
                 email:email,
                 password:this.hashPassword(password),
+            })
+            await user.save();
+            return UserMapper.userEntityFromObject(user);
+        }catch (error){
+            if(error instanceof CustomerError) {
+                throw error
+            }
+            throw CustomerError.internalServer();
+        }
+    }
+
+    async registerGoogle(registerGoogleUserDto: RegisterGoogleUserDto): Promise<UserEntity> {
+        const { name, email, googleId } = registerGoogleUserDto;
+        try{
+            const exist = await UserModel.findOne({googleId});
+            if(exist) throw CustomerError.badRequest('User already exists');
+            const user = await UserModel.create({
+                name:name,
+                email:email,
+                googleId:googleId
             })
             await user.save();
             return UserMapper.userEntityFromObject(user);
