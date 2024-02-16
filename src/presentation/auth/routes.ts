@@ -11,6 +11,7 @@ export class AuthRoutes {
         const controller = new AuthController(authRepository);
 
         router.post('/login', controller.loginUser);
+        router.post('/login/google', controller.loginUserGoogle);
         router.post('/register', controller.registerUser);
         router.post('/exists', controller.existsUser);
         router.post('/profile',AuthMiddleware.validateJWT,controller.profileUser);

@@ -9,6 +9,7 @@ import { ProfileUser } from '../../domain/use-cases/auth/profile-user.use-case';
 import { TokenDto } from '../../domain/dtos/auth/token.dto';
 import { RefreshUser } from '../../domain/use-cases/auth/refresh-user.use-case';
 import { JwtAdapter } from '../../config/jwt';
+import { LoginGoogleUser } from '../../domain/use-cases/auth/login-google-user.use-case';
 
 interface Payload {
     id: string;
@@ -43,6 +44,15 @@ export class AuthController {
        .execute(loginUserDto!)
        .then(data => res.json(data))
        .catch(error => this.handleError(error, res));
+    }
+
+    loginUserGoogle = (req: Request, res: Response) => {
+        const [error, tokenDto] = TokenDto.create(req.body);
+        if( error ) return res.status(400).json( {error} );
+        new LoginGoogleUser(this.authRepository)
+        .execute(tokenDto!)
+        .then(data => res.json(data))
+        .catch(error => this.handleError(error, res));
     }
 
     existsUser = (req: Request, res: Response) => {
