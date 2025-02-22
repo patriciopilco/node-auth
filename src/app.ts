@@ -18,7 +18,7 @@ async function main() {
     // todo: iniciar server
     console.log('Iniciando server!!!')
     new Server({
-        port: envs.PORT,
+        port: envs.PORT_APP,
         routes: AppRoutes.routes
     }).start();
 }
